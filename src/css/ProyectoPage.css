@@ -1,0 +1,7 @@
+.hidden {
+  display: none; /* Oculta el contenido */
+}
+
+body.loading {
+  overflow: hidden;
+}

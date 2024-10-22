@@ -1,0 +1,14 @@
+/* BotonAgregar.css */
+.btn-add-proyecto {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 20px; /* Ajusta el relleno */
+  font-size: 16px;
+  border-radius: 5px;
+  width: 10%;
+}
+
+.btn-add-proyecto:hover {
+  background-color: #218838; /* Color de fondo al pasar el mouse */
+}

@@ -1,0 +1,22 @@
+.boton-editar {
+  background-color: transparent;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: px;
+  margin-left: 10px; /* Margen a la izquierda */
+  margin-right: 10px; /* Margen a la derecha */
+  transition: transform 0.2s ease, color 0.2s ease;
+  color: blue;
+  width: 30px;
+  height: 35px;
+  border-color: blue;
+}
+
+.boton-editar:hover {
+  color: #0056b3;
+  transform: scale(1.1);
+}
+
+.boton-editar i {
+  pointer-events: none;
+}
