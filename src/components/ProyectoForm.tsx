@@ -57,7 +57,7 @@ export const NewProyecto: React.FC<NewProyectoProps> = ({
       style={{ display: "block", backgroundColor: "rgba(0,0,0,0.5)" }}
       tabIndex={-1}
     >
-      <div className="modal-dialog">
+      <div className="modal-dialog modal-dialog-centered">
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title">Agregar Nuevo Proyecto</h5>
