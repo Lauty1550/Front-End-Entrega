@@ -28,6 +28,7 @@ export const ProyectoPage = () => {
   }, []);
 
   function handleAddProyecto() {
+    setProyectoSeleccionado(null);
     setShowForm(true);
   }
 
@@ -122,34 +123,100 @@ export const ProyectoPage = () => {
               </tr>
             </thead>
             <tbody>
-              {proyectos.map((proyecto) => (
-                <tr key={proyecto.id}>
-                  <td>{proyecto.nombreProyecto}</td>
-                  <td>{proyecto.ubicacion}</td>
-                  <td>{proyecto.obra}</td>
-                  <td>{proyecto.destino}</td>
-                  <td>{proyecto.escala}</td>
-                  <td>{proyecto.antecedente}</td>
-                  <td>
-                    <button
-                      type="button"
-                      className="boton-editar"
-                      onClick={() => handleEditProyecto(proyecto)}
-                    >
-                      <i className="bi bi-pen"></i>
-                    </button>
-                    <button
-                      type="button"
-                      className="boton-eliminar"
-                      onClick={() => handleDeleteProyecto(proyecto.id)}
-                    >
-                      <i className="fas fa-trash"></i>
-                    </button>
+              {proyectos.length === 0 ? (
+                // Mostrar mensaje cuando no hay proyectos
+                <tr>
+                  <td colSpan={7} className="text-center">
+                    No hay proyectos
                   </td>
                 </tr>
-              ))}
+              ) : (
+                // Mostrar proyectos si existen
+                proyectos.map((proyecto) => (
+                  <tr key={proyecto.id}>
+                    <td>{proyecto.nombreProyecto}</td>
+                    <td>{proyecto.ubicacion}</td>
+                    <td>{proyecto.obra}</td>
+                    <td>{proyecto.destino}</td>
+                    <td>{proyecto.escala}</td>
+                    <td>{proyecto.antecedente}</td>
+                    <td>
+                      <button
+                        type="button"
+                        className="boton-editar"
+                        onClick={() => handleEditProyecto(proyecto)}
+                      >
+                        <i className="bi bi-pen"></i>
+                      </button>
+                      <button
+                        type="button"
+                        className="boton-eliminar"
+                        data-bs-toggle="modal"
+                        data-bs-target="#staticBackdrop"
+                        onClick={() => setProyectoSeleccionado(proyecto)}
+                      >
+                        <i className="fas fa-trash"></i>
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
+
+          {/* Modal para confirmar eliminación */}
+          <div
+            className="modal fade"
+            id="staticBackdrop"
+            data-bs-backdrop="static"
+            data-bs-keyboard="false"
+            tabIndex={-1}
+            aria-labelledby="staticBackdropLabel"
+            aria-hidden="true"
+          >
+            <div className="modal-dialog modal-dialog-centered">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h1 className="modal-title fs-5" id="staticBackdropLabel">
+                    <span style={{ fontSize: "0.9em" }}>
+                      ¿Está seguro de que quiere eliminar el proyecto:{" "}
+                      <span style={{ color: "red" }}>
+                        {proyectoSeleccionado?.nombreProyecto}
+                      </span>
+                      ?<br /> Esta acción no se puede deshacer.
+                    </span>
+                  </h1>
+                  <button
+                    type="button"
+                    className="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
+                </div>
+                <div className="modal-footer d-flex justify-content-center">
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                  >
+                    Cancelar
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    onClick={() => {
+                      if (proyectoSeleccionado) {
+                        handleDeleteProyecto(proyectoSeleccionado.id);
+                      }
+                    }}
+                    data-bs-dismiss="modal"
+                  >
+                    Eliminar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       )}
     </>
