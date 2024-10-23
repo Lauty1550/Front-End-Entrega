@@ -9,6 +9,7 @@ import { proyectoService } from "../service/ProyectoService";
 import { toast } from "react-toastify";
 import "../css/Modal.css";
 import { Proyecto } from "../Dto/ProyectoDto";
+import { useAuth0 } from "@auth0/auth0-react";
 
 interface NewProyectoProps {
   proyecto?: Proyecto | null;
@@ -27,6 +28,7 @@ export const NewProyecto: React.FC<NewProyectoProps> = ({
     reset,
     formState: { errors },
   } = useForm();
+  const { isAuthenticated, user, isLoading } = useAuth0();
 
   useEffect(() => {
     if (proyecto) {
@@ -35,12 +37,20 @@ export const NewProyecto: React.FC<NewProyectoProps> = ({
   }, [proyecto, reset]);
 
   const onSubmit = async (data: any) => {
+    if (!isAuthenticated || isLoading || !user) {
+      toast.error("No se pudo obtener la información del usuario");
+      onClose();
+      return;
+    }
+
     try {
+      const projectData = { ...data, userId: user.sub };
+
       if (proyecto) {
-        await proyectoService.actualizarProyecto(proyecto.id, data);
+        await proyectoService.actualizarProyecto(proyecto.id, projectData);
         toast.success("Proyecto actualizado exitosamente");
       } else {
-        await proyectoService.crearProyecto(data);
+        await proyectoService.crearProyecto(projectData);
         toast.success("Proyecto creado exitosamente");
       }
       onUpdate();

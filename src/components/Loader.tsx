@@ -10,7 +10,7 @@ const SpinLoader: React.FC<SpinLoaderProps> = ({ isLoading }) => {
 
   return (
     <div className="spin-loader">
-      <img src="../../public/Loading.gif" alt="Loading..." />
+      <img src="/Loading.gif" alt="Loading..." />
     </div>
   );
 };

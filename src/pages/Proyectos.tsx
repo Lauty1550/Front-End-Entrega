@@ -14,6 +14,8 @@ import "../css/BotonEliminar.css";
 import "../css/BotonAgregarProyecto.css";
 import SpinLoader from "../components/Loader";
 import "../css/ProyectoPage.css";
+import { useAuth0 } from "@auth0/auth0-react";
+import { userInfo } from "os";
 
 export const ProyectoPage = () => {
   const [showForm, setShowForm] = useState(false);
@@ -22,6 +24,7 @@ export const ProyectoPage = () => {
   const [proyectoSeleccionado, setProyectoSeleccionado] =
     useState<Proyecto | null>(null);
   const [isLoading, setIsloading] = useState(true);
+  const { isAuthenticated, user } = useAuth0();
 
   useEffect(() => {
     handleGetProyectos();
@@ -39,8 +42,13 @@ export const ProyectoPage = () => {
 
   async function handleGetProyectos() {
     setIsloading(true);
+    if (!isAuthenticated || !user || !user.sub) {
+      toast.error("Error al obtener proyectos");
+      setIsloading(false);
+      return;
+    }
     try {
-      const data = await proyectoService.obtenerProyectos();
+      const data = await proyectoService.obtenerProyectosPorUserId(user.sub);
       setProyectos(data);
       setShowProyectos(true);
       console.log("Proyectos obtenidos exitosamente");

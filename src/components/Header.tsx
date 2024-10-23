@@ -2,14 +2,19 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import LoginButton from "./LoginButton";
+import { useAuth0 } from "@auth0/auth0-react";
+import LogoutButton from "./LogoutButton";
 
 const Header: React.FC = () => {
+  const { isAuthenticated } = useAuth0();
+
   return (
     <nav className="navbar bg-dark navbar-expand-lg" data-bs-theme="dark">
       <div className="container-fluid">
         <Link className="navbar-brand" to="/home">
           <img
-            src="../../public/logo.jpg"
+            src="/logo.jpg" // Directly reference the logo in the public folder
             alt="Proyecto"
             style={{ width: "90px", height: "80px" }}
           />
@@ -46,17 +51,35 @@ const Header: React.FC = () => {
               </Link>
             </li>
           </ul>
-          <form className="d-flex" role="search">
-            <input
-              className="form-control me-2"
-              type="search"
-              placeholder="Search"
-              aria-label="Search"
-            />
-            <button className="btn btn-outline-success" type="submit">
-              Search
-            </button>
-          </form>
+
+          {/* User dropdown */}
+          {isAuthenticated ? (
+            <div className="dropdown bg-dark">
+              <button
+                className="btn btn-secondary bg-dark dropdown-toggle"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                User Options
+              </button>
+              <ul className="dropdown-menu">
+                <li>
+                  <a className="dropdown-item" href="#">
+                    <LogoutButton></LogoutButton>
+                  </a>
+                </li>
+                <li>
+                  <a className="dropdown-item" href="#">
+                    Another action
+                  </a>
+                </li>
+              </ul>
+            </div>
+          ) : (
+            <LoginButton />
+          )}
         </div>
       </div>
     </nav>

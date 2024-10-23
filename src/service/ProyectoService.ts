@@ -37,6 +37,19 @@ export const proyectoService = {
     }
   },
 
+  async obtenerProyectosPorUserId(userId: string) {
+    try {
+      const response = await fetch(`${BASE_URL}/user/${userId}`);
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+      return await response.json();
+    } catch (error) {
+      console.error("Error al obtener proyectos:", error);
+      throw error;
+    }
+  },
+
   async deleteProyecto(id: string) {
     try {
       const response = await fetch(`${BASE_URL}/Borrar/${id}`, {
